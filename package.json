@@ -1,5 +1,5 @@
 {
-  "name": "@afipsdk/afip.js",
+  "name": "lagom/afip.js",
   "version": "0.6.3",
   "description": "Libreria para usar los Web Services de AFIP con JavaScript",
   "main": "src/Afip.js",
