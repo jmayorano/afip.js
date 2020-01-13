@@ -97,8 +97,8 @@ function Afip(options = {}){
 	this.CUIT 		= options['CUIT'];
 	this.RES_FOLDER = options['res_folder'];
 	this.TA_FOLDER 	= options['ta_folder'];
-	this.CERT 		= path.resolve(this.RES_FOLDER, options['cert']);
-	this.PRIVATEKEY = path.resolve(this.RES_FOLDER, options['key']);
+	this.CERT 		= options['cert'];
+	this.PRIVATEKEY = options['key'];
 	this.WSAA_WSDL 	= path.resolve(__dirname, 'Afip_res/', 'wsaa.wsdl');
 
 	if (options['production']) {
@@ -187,17 +187,19 @@ Afip.prototype.CreateServiceTA = async function(service) {
 	</loginTicketRequest>`).trim();
 
 	// Get cert file content
-	const certPromise = new Promise((resolve, reject) => {
+	/*const certPromise = new Promise((resolve, reject) => {
 		fs.readFile(this.CERT, { encoding:'utf8' }, (err, data) => err ? reject(err) : resolve(data));
 	});
 		
 	// Get key file content
 	const keyPromise = new Promise((resolve, reject) => {
 		fs.readFile(this.PRIVATEKEY, { encoding:'utf8' }, (err, data) => err ? reject(err) : resolve(data));
-	});
+	});*/
 
 	// Wait for cert and key content
-	const [cert, key] = await Promise.all([certPromise, keyPromise]);
+	const [cert, key] = [this.CERT, this.PRIVATEKEY]; //await Promise.all([certPromise, keyPromise]);
+
+	//here we must getting certs from MINIO
 
 	// Sign Tokent request authorization XML
 	const p7 = forge.pkcs7.createSignedData();
